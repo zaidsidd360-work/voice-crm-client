@@ -1,34 +1,38 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-import CreateIntegration from "./components/CreateIntegration";
-import FetchIntegration from "./components/FetchIntegration";
-import IntegrationList from "./components/IntegrationList";
-import UpdateIntegration from "./components/UpdateIntegrations";
-import { IntegrationData, dummyData } from "./dummyData";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import { AuthProvider } from "./contexts/AuthContext";
+import Home from "./pages/Home";
+import DashboardLayout from "./pages/Dashboard2";
+import Overview from "./components/Overview";
+import Profile from "./components/Profile";
+import Integrations from "./components/Integrations";
+import ApiKeys from "./components/ApiKeys";
 
-function App() {
-	const [integrationData, setIntegrationData] = useState<IntegrationData[]>(
-		[]
-	);
-
-	useEffect(() => {
-		setIntegrationData(dummyData);
-	}, []);
-
+const App: React.FC = () => {
 	return (
-		<div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center space-y-8 p-4">
-			<h1 className="text-2xl font-bold text-gray-700">
-				Integration Management
-			</h1>
-			<CreateIntegration
-				integrationData={integrationData}
-				setIntegrationData={setIntegrationData}
-			/>
-			<UpdateIntegration />
-			<FetchIntegration />
-			<IntegrationList integrationData={integrationData} />
+		<div className="w-[100vw]">
+			<AuthProvider>
+				<Router>
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/login" element={<Login />} />
+						<Route path="/signup" element={<Signup />} />
+						<Route path="/dashboard" element={<DashboardLayout />}>
+							<Route index element={<Overview />} />
+							<Route path="profile" element={<Profile />} />
+							<Route
+								path="integrations"
+								element={<Integrations />}
+							/>
+							<Route path="api-keys" element={<ApiKeys />} />
+						</Route>
+					</Routes>
+				</Router>
+			</AuthProvider>
 		</div>
 	);
-}
+};
 
 export default App;

@@ -72,7 +72,7 @@ const Profile: React.FC = () => {
 		const fetchBases = async () => {
 			try {
 				const { bases } = await getAirtableBases(
-					"patu3bTCvjKcj1dAH.7c39ca650e92b0272aca4ab7cac510aa463639e76c928889e61741f959578a74"
+					"patu3bTCvjKcj1dAH.14bdd086d57abbd25e028e8225211f1aca60f9ce95e0ce0526a47d19a4522379"
 				);
 				setBases(bases);
 			} catch (err: any) {
@@ -87,7 +87,7 @@ const Profile: React.FC = () => {
 	}, []);
 
 	return (
-		<div className="space-y-8">
+		<div className="space-y-8 overflow-y-scroll h-full pr-5">
 			{/* Profile Section */}
 			<div className="w-full rounded-2xl border border-white/10 bg-black/50 backdrop-blur-xl p-8">
 				<h2 className="text-3xl font-bold text-white mb-8">Profile</h2>

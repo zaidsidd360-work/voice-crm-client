@@ -26,7 +26,7 @@ const IntegrationList = ({
 							<tr key={index} className="hover:bg-gray-100">
 								<td className="border-b p-2">{data.userId}</td>
 								<td className="border-b p-2">
-									{data.retellApiKey}
+									{data.vapiApiKey}
 								</td>
 								<td className="border-b p-2">
 									{data.vapiApiKey}

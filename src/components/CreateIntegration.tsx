@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { createIntegration } from "../api/integrationApi";
 import { IntegrationData } from "../dummyData";
 
 const CreateIntegration = ({

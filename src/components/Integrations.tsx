@@ -163,6 +163,8 @@ const Integrations: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
+	console.log(setIsLoading);
+
 	const handleCreateIntegration = async (data: {
 		name: string;
 		type: string;

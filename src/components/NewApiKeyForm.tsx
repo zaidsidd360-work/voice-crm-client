@@ -16,8 +16,11 @@ const NewApiKeyForm: React.FC<NewApiKeyFormProps> = ({
 	const [name, setName] = useState("");
 	const [key, setKey] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [error, setError] = useState("");
 	const { user } = useAuth();
+
+	console.log(error);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();

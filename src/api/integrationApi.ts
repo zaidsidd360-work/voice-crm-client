@@ -1,59 +1,42 @@
-// import axiosInstance from "../axiosConfig";
+import axiosInstance from "../services/axiosConfig";
 
 interface IntegrationData {
 	userId: string;
-	retellApiKey?: string;
-	vapiApiKey?: string;
-	airtableApiKey?: string;
+	name: string;
+	type: "airtable" | "gohighlevel";
+	vapiApiKey: string;
+	vapiToolId: string;
+	airtableToken?: string;
+	baseId?: string;
+	tableId?: string;
 	ghlApiKey?: string;
 }
 
-// export const createIntegration = (data: IntegrationData) => {
-// 	return axiosInstance.post("/integration", data);
-// };
+export const createIntegration = async (data: IntegrationData) => {
+	console.log(data);
+	const response = await axiosInstance.post("/integrations", data);
+	return response.data;
+};
 
-// export const updateIntegration = (
-// 	userId: string,
-// 	data: Partial<IntegrationData>
-// ) => {
-// 	return axiosInstance.put(`/integration/${userId}`, data);
-// };
+export const getIntegrations = async (userId: string) => {
+	const response = await axiosInstance.get("/integrations/" + userId);
+	return response.data;
+};
 
-// export const getIntegration = (userId: string) => {
-// 	return axiosInstance.get(`/integration/${userId}`);
-// };
-
-import { dummyData } from "../dummyData";
-
-export const createIntegration = async (data: Required<IntegrationData>) => {
-	dummyData.push(data);
-	return new Promise((resolve) => {
-		setTimeout(
-			() => resolve({ data: "Integration created successfully" }),
-			500
-		);
-	});
+export const getIntegration = async (id: string) => {
+	const response = await axiosInstance.get(`/integrations/${id}`);
+	return response.data;
 };
 
 export const updateIntegration = async (
-	userId: string,
+	id: string,
 	data: Partial<IntegrationData>
 ) => {
-	const index = dummyData.findIndex((item) => item.userId === userId);
-	if (index !== -1) {
-		dummyData[index] = { ...dummyData[index], ...data };
-	}
-	return new Promise((resolve) => {
-		setTimeout(
-			() => resolve({ data: "Integration updated successfully" }),
-			500
-		);
-	});
+	const response = await axiosInstance.patch(`/integrations/${id}`, data);
+	return response.data;
 };
 
-export const getIntegration = async (userId: string) => {
-	const integration = dummyData.find((item) => item.userId === userId);
-	return new Promise((resolve) => {
-		setTimeout(() => resolve({ data: { integration } }), 500);
-	});
+export const deleteIntegration = async (id: string) => {
+	const response = await axiosInstance.delete(`/integrations/${id}`);
+	return response.data;
 };

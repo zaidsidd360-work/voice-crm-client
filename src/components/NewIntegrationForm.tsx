@@ -4,6 +4,8 @@ import { Loader2 } from "lucide-react";
 import { getAirtableBases, getAirtableTables } from "../api/airtableApi";
 import { getVapiTools } from "../api/vapiApi";
 import { VapiTool } from "./Profile";
+import { getApiKeys } from "../api/keysApi";
+import { useAuth } from "../contexts/AuthContext";
 
 interface NewIntegrationFormProps {
 	onClose: () => void;
@@ -13,6 +15,7 @@ interface NewIntegrationFormProps {
 		baseId?: string;
 		tableId?: string;
 		vapiToolId: string;
+		ghlApiKey?: string;
 	}) => Promise<void>;
 }
 
@@ -63,16 +66,31 @@ const NewIntegrationForm: React.FC<NewIntegrationFormProps> = ({
 	const [isLoadingVapiTools, setIsLoadingVapiTools] = useState(false);
 	const [isLoadingBases, setIsLoadingBases] = useState(false);
 	const [isLoadingTables, setIsLoadingTables] = useState(false);
+	const [apiKeys, setApiKeys] = useState<
+		Array<{ id: string; key: string; name: string }>
+	>([]);
+	const [isLoadingApiKeys, setIsLoadingApiKeys] = useState(false);
+	const [selectedApiKey, setSelectedApiKey] = useState("");
+
+	const { user } = useAuth();
+
+	console.log(selectedApiKey);
 
 	useEffect(() => {
 		fetchVapiTools();
 	}, []);
 
 	useEffect(() => {
-		if (type === "airtable") {
-			fetchBases();
+		if (type) {
+			fetchApiKeys();
 		}
 	}, [type]);
+
+	useEffect(() => {
+		if (type === "airtable" && selectedApiKey) {
+			fetchBases();
+		}
+	}, [selectedApiKey]);
 
 	useEffect(() => {
 		if (baseId) {
@@ -99,7 +117,8 @@ const NewIntegrationForm: React.FC<NewIntegrationFormProps> = ({
 		setIsLoadingBases(true);
 		try {
 			const { bases } = await getAirtableBases(
-				"patu3bTCvjKcj1dAH.14bdd086d57abbd25e028e8225211f1aca60f9ce95e0ce0526a47d19a4522379"
+				// "patu3bTCvjKcj1dAH.14bdd086d57abbd25e028e8225211f1aca60f9ce95e0ce0526a47d19a4522379"
+				selectedApiKey
 			);
 			setBases(bases);
 		} catch (err: any) {
@@ -127,6 +146,18 @@ const NewIntegrationForm: React.FC<NewIntegrationFormProps> = ({
 		}
 	};
 
+	const fetchApiKeys = async () => {
+		setIsLoadingApiKeys(true);
+		try {
+			const response = await getApiKeys(user.id);
+			setApiKeys(response.data.apiKeys);
+		} catch (err: any) {
+			setError(err.message || "Failed to fetch API keys");
+		} finally {
+			setIsLoadingApiKeys(false);
+		}
+	};
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setIsLoading(true);
@@ -136,6 +167,7 @@ const NewIntegrationForm: React.FC<NewIntegrationFormProps> = ({
 				type,
 				vapiToolId,
 				...(type === "airtable" && { baseId, tableId }),
+				...(type === "gohighlevel" && { ghlApiKey: selectedApiKey }),
 			});
 		} catch (err: any) {
 			setError(err.message || "Failed to create integration");
@@ -186,7 +218,7 @@ const NewIntegrationForm: React.FC<NewIntegrationFormProps> = ({
 					onChange={(e) =>
 						setType(e.target.value as "airtable" | "gohighlevel")
 					}
-					className="w-full px-4 py-2 bg-black/50 border border-white/10 rounded-lg focus:ring-2 focus:ring-white/20 focus:outline-none text-white"
+					className="w-full px-4 py-2 bg-black/50 border border-white/10 rounded-lg text-white"
 					required
 				>
 					<option value="">Select Type</option>
@@ -195,7 +227,34 @@ const NewIntegrationForm: React.FC<NewIntegrationFormProps> = ({
 				</select>
 			</div>
 
-			{type === "airtable" && (
+			{type && (
+				<div>
+					<label className="block text-sm font-medium text-gray-400 mb-2">
+						Select API Key
+					</label>
+					{isLoadingApiKeys ? (
+						<div className="flex items-center justify-center py-4">
+							<Loader2 className="h-6 w-6 animate-spin text-white/50" />
+						</div>
+					) : (
+						<select
+							value={selectedApiKey}
+							onChange={(e) => setSelectedApiKey(e.target.value)}
+							className="w-full px-4 py-2 bg-black/50 border border-white/10 rounded-lg text-white"
+							required
+						>
+							<option value="">Select API Key</option>
+							{apiKeys.map((key) => (
+								<option key={key.id} value={key.key}>
+									{key.name}
+								</option>
+							))}
+						</select>
+					)}
+				</div>
+			)}
+
+			{type === "airtable" && selectedApiKey && (
 				<>
 					{isLoadingBases ? (
 						<div className="flex items-center justify-center py-4">
@@ -259,7 +318,7 @@ const NewIntegrationForm: React.FC<NewIntegrationFormProps> = ({
 			)}
 
 			{((type === "airtable" && baseId && tableId) ||
-				type === "gohighlevel") && (
+				(type === "gohighlevel" && selectedApiKey)) && (
 				<div>
 					<label className="block text-sm font-medium text-gray-400 mb-2">
 						Integration Name

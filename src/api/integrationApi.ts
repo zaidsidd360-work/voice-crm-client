@@ -4,7 +4,6 @@ interface IntegrationData {
 	userId: string;
 	name: string;
 	type: "airtable" | "gohighlevel";
-	vapiApiKey: string;
 	vapiToolId: string;
 	airtableToken?: string;
 	baseId?: string;

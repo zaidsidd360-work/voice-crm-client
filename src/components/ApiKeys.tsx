@@ -63,7 +63,7 @@ const ApiKeys: React.FC = () => {
 
 	if (isLoading) {
 		return (
-			<div className="w-full h-[60vh] rounded-2xl border border-white/10 bg-black/50 backdrop-blur-xl p-8 flex items-center justify-center">
+			<div className="w-full h-full rounded-2xl border border-white/10 bg-black/50 backdrop-blur-xl p-8 flex items-center justify-center">
 				<Loader2 className="h-8 w-8 animate-spin text-white/50" />
 			</div>
 		);
@@ -85,7 +85,7 @@ const ApiKeys: React.FC = () => {
 	// }
 
 	return (
-		<div className="w-full rounded-2xl border border-white/10 bg-black/50 backdrop-blur-xl p-8">
+		<div className="w-full h-full rounded-2xl border border-white/10 bg-black/50 backdrop-blur-xl p-8 overflow-auto">
 			{/* {error && (
 				<div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm">
 					{error}

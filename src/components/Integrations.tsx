@@ -69,6 +69,7 @@ const Integrations: React.FC = () => {
 		baseId?: string;
 		tableId?: string;
 		vapiToolId: string;
+		ghlApiKey?: string;
 	}) => {
 		setIsLoading(true);
 		setError("");
@@ -78,13 +79,13 @@ const Integrations: React.FC = () => {
 				userId: user.id,
 				name: data.name,
 				type: data.type as "airtable" | "gohighlevel",
-				vapiApiKey: "27736a48-a784-4a11-a9e8-13402825c744",
 				vapiToolId: data.vapiToolId,
 				...(data.type === "airtable" && {
-					airtableToken:
-						"patu3bTCvjKcj1dAH.14bdd086d57abbd25e028e8225211f1aca60f9ce95e0ce0526a47d19a4522379",
 					baseId: data.baseId,
 					tableId: data.tableId,
+				}),
+				...(data.type === "gohighlevel" && {
+					ghlApiKey: data.ghlApiKey,
 				}),
 			});
 
@@ -154,7 +155,7 @@ const Integrations: React.FC = () => {
 									<h3 className="text-lg font-medium text-white">
 										{integration.name}
 									</h3>
-									<span
+									{/* <span
 										className={`px-2 py-1 rounded-full text-xs ${
 											integration.status === "active"
 												? "bg-green-500/10 text-green-400"
@@ -162,7 +163,7 @@ const Integrations: React.FC = () => {
 										}`}
 									>
 										{integration.status}
-									</span>
+									</span> */}
 								</div>
 							</div>
 						</div>
@@ -179,12 +180,12 @@ const Integrations: React.FC = () => {
 										</span>{" "}
 										{integration.vapiToolId}
 									</p>
-									<p className="text-gray-400">
+									{/* <p className="text-gray-400">
 										<span className="text-gray-500">
 											API Key:
 										</span>{" "}
 										{integration.vapiApiKey}
-									</p>
+									</p> */}
 								</div>
 							</div>
 

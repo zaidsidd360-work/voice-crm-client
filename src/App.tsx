@@ -9,6 +9,7 @@ import Overview from "./components/Overview";
 import Profile from "./components/Profile";
 import Integrations from "./components/Integrations";
 import ApiKeys from "./components/ApiKeys";
+import ExcelCallSheets from "./components/ExcelCallSheets";
 
 const App: React.FC = () => {
 	return (
@@ -27,6 +28,10 @@ const App: React.FC = () => {
 								element={<Integrations />}
 							/>
 							<Route path="api-keys" element={<ApiKeys />} />
+							<Route
+								path="excel-call-sheets"
+								element={<ExcelCallSheets />}
+							/>
 						</Route>
 					</Routes>
 				</Router>

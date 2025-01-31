@@ -7,6 +7,7 @@ import {
 	LogOut,
 	Loader2,
 	LayoutDashboard,
+	NotebookText,
 } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -36,6 +37,11 @@ const Sidebar: React.FC = () => {
 			icon: Settings,
 		},
 		{ name: "API Keys", href: "/dashboard/api-keys", icon: Key },
+		{
+			name: "Excel call sheets",
+			href: "/dashboard/excel-call-sheets",
+			icon: NotebookText,
+		},
 	];
 
 	return (

@@ -10,9 +10,7 @@ const ExcelCallSheets: React.FC = () => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const [excelData, setExcelData] = useState<any[]>([]);
-
-	console.log(excelData);
+	const [freq, setFreq] = useState<number>(3);
 
 	const handleFileUpload = async (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -44,12 +42,11 @@ const ExcelCallSheets: React.FC = () => {
 					const sheet = workbook.Sheets[sheetName];
 					jsonData = XLSX.utils.sheet_to_json(sheet);
 					console.log(jsonData);
-
-					setExcelData(jsonData);
 					const { data: res } = await axiosInstance.post(
 						"/call-sheet",
 						{
 							contacts: jsonData,
+							frequency: freq,
 						}
 					);
 					console.log(res);
@@ -107,7 +104,35 @@ const ExcelCallSheets: React.FC = () => {
 					</button>
 				</div>
 			</div>
-
+			<p className="text-white/50 text-sm">
+				View{" "}
+				<a
+					href="https://docs.google.com/spreadsheets/d/1Ac-90pkYW8mCH7mjNayO6bwf-URHx2IUjE4_nEMoHPA/edit?usp=sharing"
+					className="underline hover:text-white"
+					target="_blank"
+				>
+					sample Excel sheet
+				</a>{" "}
+				to see the required format.
+			</p>
+			<div className="mt-4 w-[18rem] border rounded-lg border-white/10 p-2">
+				<label htmlFor="frequency" className="text-white text-sm">
+					Calling Frequency (seconds)
+				</label>
+				<div className="flex justify-evenly gap-2 text-white text-sm mt-3">
+					1
+					<input
+						type="range"
+						id="frequency"
+						min="1"
+						max="10"
+						className="w-full h-2 mt-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
+						value={freq}
+						onChange={(e) => setFreq(Number(e.target.value))}
+					/>
+					10
+				</div>
+			</div>
 			{error && (
 				<div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500">
 					{error}

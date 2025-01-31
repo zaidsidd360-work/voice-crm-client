@@ -29,7 +29,7 @@ const App: React.FC = () => {
 							/>
 							<Route path="api-keys" element={<ApiKeys />} />
 							<Route
-								path="excel-call-sheets"
+								path="outbound-call"
 								element={<ExcelCallSheets />}
 							/>
 						</Route>

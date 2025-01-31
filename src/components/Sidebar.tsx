@@ -38,8 +38,8 @@ const Sidebar: React.FC = () => {
 		},
 		{ name: "API Keys", href: "/dashboard/api-keys", icon: Key },
 		{
-			name: "Excel call sheets",
-			href: "/dashboard/excel-call-sheets",
+			name: "Outbound Call",
+			href: "/dashboard/outbound-call",
 			icon: NotebookText,
 		},
 	];

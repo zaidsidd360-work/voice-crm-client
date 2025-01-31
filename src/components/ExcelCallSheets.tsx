@@ -12,6 +12,8 @@ const ExcelCallSheets: React.FC = () => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const [excelData, setExcelData] = useState<any[]>([]);
 
+	console.log(excelData);
+
 	const handleFileUpload = async (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
